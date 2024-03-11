@@ -1,0 +1,75 @@
+.modal {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: all 1s;
+  }
+  
+.modal-content {
+    background-color: #fff;
+    padding: 0rem 4rem 4rem 4rem;
+    border-radius: 8px;
+    width: 500px;
+    height: 540px;
+  }
+  
+.close {
+  cursor: pointer;
+  border-style: none;
+  background: red;
+  color: white;
+  padding-inline: 11px;
+  font-size: 27px;
+  border-radius: 24px;
+  }
+
+.container-button{
+  display: flex;
+  flex-direction: row-reverse;
+  width: 429px;
+  margin-top: 7px;
+  margin-bottom: 20px;
+}
+
+.title{
+    margin-bottom: 3rem;
+}
+  
+  .modal-input,
+  .button-agregar {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+  }
+  
+.button-agregar {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 30px;
+  }
+  
+.button-agregar:hover {
+    background-color: #0056b3;
+  }
+
+.input-error{
+  border: 1px solid red;
+}

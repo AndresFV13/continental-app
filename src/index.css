@@ -1,0 +1,516 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
+}
+
+/* Text */
+.ft-07{
+  font-size: 0.90rem;
+}
+
+.ft-1{
+  font-size: 1rem;
+}
+
+.ft-2{
+  font-size: 1.5rem;
+}
+
+.ft-3{
+  font-size: 3rem;
+}
+
+/* Establece un contenedor como un contenedor flexible */
+.d-flex {
+  display: flex !important;
+}
+
+/* Define una fila de elementos flexibles */
+.flex-row {
+  flex-direction: row !important;
+}
+
+/* Define una columna de elementos flexibles */
+.flex-column {
+  flex-direction: column !important;
+}
+
+/* Alinea los elementos flexibles al principio del contenedor */
+.justify-content-start {
+  justify-content: flex-start !important;
+}
+
+/* Alinea los elementos flexibles al final del contenedor */
+.justify-content-end {
+  justify-content: flex-end !important;
+}
+
+/* Alinea los elementos flexibles en el centro del contenedor */
+.justify-content-center {
+  justify-content: center !important;
+}
+
+/* Alinea los elementos flexibles distribuidos uniformemente en el contenedor con el espacio restante */
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+/* Alinea los elementos flexibles distribuidos uniformemente en el contenedor con el espacio alrededor de cada elemento */
+.justify-content-around {
+  justify-content: space-around !important;
+}
+
+/* Alinea los elementos flexibles al principio del eje transversal */
+.align-items-start {
+  align-items: flex-start !important;
+}
+
+/* Alinea los elementos flexibles al final del eje transversal */
+.align-items-end {
+  align-items: flex-end !important;
+}
+
+/* Alinea los elementos flexibles en el centro del eje transversal */
+.align-items-center {
+  align-items: center !important;
+}
+
+/* Alinea los elementos flexibles en la línea de base del eje transversal */
+.align-items-baseline {
+  align-items: baseline !important;
+}
+
+/* Estira los elementos flexibles para que llenen el contenedor a lo largo del eje transversal */
+.align-items-stretch {
+  align-items: stretch !important;
+}
+
+/* Alinea un elemento flexible al principio del eje transversal, anulando la alineación predeterminada del contenedor */
+.align-self-start {
+  align-self: flex-start !important;
+}
+
+/* Alinea un elemento flexible al final del eje transversal, anulando la alineación predeterminada del contenedor */
+.align-self-end {
+  align-self: flex-end !important;
+}
+
+/* Alinea un elemento flexible en el centro del eje transversal, anulando la alineación predeterminada del contenedor */
+.align-self-center {
+  align-self: center !important;
+}
+
+/* Alinea un elemento flexible en la línea de base del eje transversal, anulando la alineación predeterminada del contenedor */
+.align-self-baseline {
+  align-self: baseline !important;
+}
+
+/* Estira un elemento flexible para que llene el contenedor a lo largo del eje transversal, anulando la alineación predeterminada del contenedor */
+.align-self-stretch {
+  align-self: stretch !important;
+}
+
+.text-align-center{
+  text-align: center;
+}
+
+.font-weigth-6{
+  font-weight: 600;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.w-90 {
+  width: 90%;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+.w-20 {
+  width: 20%;
+}
+
+.w-5 {
+  width: 4rem;
+}
+
+.w-3{
+  width: 3rem;
+}
+
+
+.h-100 {
+  height: 100%;
+}
+
+
+.d-block {
+  display: block;
+}
+
+/* Margen */
+.m-0 {
+  margin: 0 !important;
+}
+
+.mt-0,
+.my-0 {
+  margin-top: 0 !important;
+}
+
+.mr-0,
+.mx-0 {
+  margin-right: 0 !important;
+}
+
+.mb-0,
+.my-0 {
+  margin-bottom: 0 !important;
+}
+
+.ml-0,
+.mx-0 {
+  margin-left: 0 !important;
+}
+
+.m-1 {
+  margin: 0.25rem !important;
+}
+
+.mt-1,
+.my-1 {
+  margin-top: 0.25rem !important;
+}
+
+.mr-1,
+.mx-1 {
+  margin-right: 0.25rem !important;
+}
+
+.mb-1,
+.my-1 {
+  margin-bottom: 0.25rem !important;
+}
+
+.ml-1,
+.mx-1 {
+  margin-left: 0.25rem !important;
+}
+
+.m-2 {
+  margin: 0.5rem !important;
+}
+
+.mt-2,
+.my-2 {
+  margin-top: 0.5rem !important;
+}
+
+.mr-2,
+.mx-2 {
+  margin-right: 0.5rem !important;
+}
+
+.mb-2,
+.my-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.ml-2,
+.mx-2 {
+  margin-left: 0.5rem !important;
+}
+
+.m-3 {
+  margin: 1rem !important;
+}
+
+.mt-3,
+.my-3 {
+  margin-top: 1rem !important;
+}
+
+.mr-3,
+.mx-3 {
+  margin-right: 1rem !important;
+}
+
+.mb-3,
+.my-3 {
+  margin-bottom: 1rem !important;
+}
+
+.ml-3,
+.mx-3 {
+  margin-left: 1rem !important;
+}
+
+.m-4 {
+  margin: 1.5rem !important;
+}
+
+.mt-4,
+.my-4 {
+  margin-top: 1.5rem !important;
+}
+
+.mr-4,
+.mx-4 {
+  margin-right: 1.5rem !important;
+}
+
+.mb-4,
+.my-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.ml-4,
+.mx-4 {
+  margin-left: 1.5rem !important;
+}
+
+.m-5 {
+  margin: 3rem !important;
+}
+
+.mt-5,
+.my-5 {
+  margin-top: 3rem !important;
+}
+
+.mr-5,
+.mx-5 {
+  margin-right: 3rem !important;
+}
+
+.mb-5,
+.my-5 {
+  margin-bottom: 3rem !important;
+}
+
+.ml-5,
+.mx-5 {
+  margin-left: 3rem !important;
+}
+
+/* Relleno */
+.p-0 {
+  padding: 0 !important;
+}
+
+.pt-0,
+.py-0 {
+  padding-top: 0 !important;
+}
+
+.pr-0,
+.px-0 {
+  padding-right: 0 !important;
+}
+
+.pb-0,
+.py-0 {
+  padding-bottom: 0 !important;
+}
+
+.pl-0,
+.px-0 {
+  padding-left: 0 !important;
+}
+
+.p-1 {
+  padding: 0.25rem !important;
+}
+
+.pt-1,
+.py-1 {
+  padding-top: 0.25rem !important;
+}
+
+.pr-1,
+.px-1 {
+  padding-right: 0.25rem !important;
+}
+
+.pb-1,
+.py-1 {
+  padding-bottom: 0.25rem !important;
+}
+
+.pl-1,
+.px-1 {
+  padding-left: 0.25rem !important;
+}
+
+.p-2 {
+  padding: 0.5rem !important;
+}
+
+.pt-2,
+.py-2 {
+  padding-top: 0.5rem !important;
+}
+
+.pr-2,
+.px-2 {
+  padding-right: 0.5rem !important;
+}
+
+.pb-2,
+.py-2 {
+  padding-bottom: 0.5rem !important;
+}
+
+.pl-2,
+.px-2 {
+  padding-left: 0.5rem !important;
+}
+
+.p-3 {
+  padding: 1rem !important;
+}
+
+.pt-3,
+.py-3 {
+  padding-top: 1rem !important;
+}
+
+.pr-3,
+.px-3 {
+  padding-right: 1rem !important;
+}
+
+.pb-3,
+.py-3 {
+  padding-bottom: 1rem !important;
+}
+
+.pl-3,
+.px-3 {
+  padding-left: 1rem !important;
+}
+
+.p-4 {
+  padding: 1.5rem !important;
+}
+
+.pt-4,
+.py-4 {
+  padding-top: 1.5rem !important;
+}
+
+.pr-4,
+.px-4 {
+  padding-right: 1.5rem !important;
+}
+
+.pb-4,
+.py-4 {
+  padding-bottom: 1.5rem !important;
+}
+
+.pl-4,
+.px-4 {
+  padding-left: 1.5rem !important;
+}
+
+.p-5 {
+  padding: 3rem !important;
+}
+
+.pt-5,
+.py-5 {
+  padding-top: 3rem !important;
+}
+
+.pr-5,
+.px-5 {
+  padding-right: 3rem !important;
+}
+
+.pb-5,
+.py-5 {
+  padding-bottom: 3rem !important;
+}
+
+.pl-5,
+.px-5 {
+  padding-left: 3rem !important;
+}
+
+/* colors */
+
+.logo-color{
+  color: #D6D7D8 !important;
+}
+
+
+.c-gray{
+  color: #313131;
+}
+
+.c-lt-gray{
+  background-color: #F6F8F9;
+} 
+
+.c-lb-gray{
+  background-color: #F4F6F9;
+}
+
+.c-white{
+  background-color: #ffff;
+}
+
+/* aditional styles */
+.tx-n{
+  text-decoration: none !important;
+}
+
+.b-gray{
+  border: 1px solid #DDDDDD;
+}
+
+.bor-gray{
+  border: 1px solid #DEE2E6;
+}
+
+.b-rad{
+  border-radius: 0.5rem;
+}
+
+
+/* Botones */
+.buttons{
+  border: none;
+  color: white;
+  text-decoration: none;
+  font-weight: 400;
+  border-radius: 0.25rem;
+  background-color: #007BFF;
+  transition-duration: 0.4s;
+}
+
+.buttons:hover{
+  background-color: #0369d6;
+}
