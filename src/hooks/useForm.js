@@ -1,20 +1,25 @@
 import { useState } from "react";
 
 
-export const useForm = (initialData, onValidate) => {
+export const useForm = (
+    initialData, 
+    onValidate, 
+    setShowModalALum, 
+    ) => {
 
     const [inputValue, setinputValue] = useState(initialData)
     const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState([])
+    const [errors, setErrors] = useState([]);
 
     const onSubmit = (event) => {
+        const err = onValidate(inputValue);
         event.preventDefault()
         console.log(inputValue)
 
-        const err = onValidate(inputValue);
-
         if(err === null){
             console.log("enviando formulario")
+            setShowModalALum(false)
+            
         }else{
             setErrors(err)
         }
@@ -23,8 +28,8 @@ export const useForm = (initialData, onValidate) => {
     return{
         loading, 
         errors, 
-        onSubmit,
         inputValue,
-        setinputValue    
+        setinputValue,
+        onSubmit, 
     }
 }

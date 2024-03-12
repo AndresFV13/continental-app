@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom';
 
 // images
 import logo from "../../../public/img/AdminLTELogo.png"
+import userLogo from '../../../public/img/user-logo.png' 
 
 //Styled
 import styled from 'styled-components';
 import '../../components/Modals/style.css'
+
+// Hooks
+import { useModal } from '../../hooks/useModal'
 
 // Modales
 import { ModalAlumnos } from '../Modals/ModalAlumnos';
@@ -15,22 +19,17 @@ import { ModalInstructores } from '../Modals/ModalInstructores';
 
 const Sidebar = () => {
 
-    const [showModalAlum, setShowModalALum] = useState(false);
-    const [showModalInst, setShowModalInst] = useState(false);
-    const [showModalVehi, setShowModalVehi] = useState(false);
-
-    const openModalAlum = () => {
-        setShowModalALum(true);
-        console.log(showModalAlum)
-    };
-
-    const openModalInst = () => {
-        setShowModalInst(true);
-    };
-
-    const openModalVehi = () => {
-        setShowModalVehi(true);
-    };
+    const {
+        showModalAlum,
+        showModalInst,
+        showModalVehi,
+        setShowModalALum,
+        setShowModalInst,
+        setShowModalVehi,
+        openModalAlum,
+        openModalInst,
+        openModalVehi
+    } = useModal()
 
     const Sidebar = styled.aside`
         height: 100%;
@@ -57,7 +56,7 @@ const Sidebar = () => {
                 <p className='logo-color'> Continental App </p>
             </Link>
             <ProfileSection className="d-flex align-items-center">
-                <ProfilePic src="https://scontent.fibe1-1.fna.fbcdn.net/v/t39.30808-1/391625107_3629684080593702_2695546240744665024_n.jpg?stp=dst-jpg_p160x160&_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=-YlHd39nPVQAX_DjERo&_nc_ht=scontent.fibe1-1.fna&oh=00_AfD9gI3kfqvWncgpEaX7Ioybz2Z5yM2SIcOvEbl-Zd1UFw&oe=65F1A8A5" alt="Alejandro Sabogal" />
+                <ProfilePic src={userLogo} alt="Alejandro Sabogal" />
                 <ProfileName className='logo-color'> Sebastian Quimbayo </ProfileName>
             </ProfileSection>
             <div className='d-flex flex-column p-2 mt-2'>

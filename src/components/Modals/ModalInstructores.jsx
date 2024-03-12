@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+// hooks
 import { useForm } from '../../hooks/useForm'
 
 export const ModalInstructores = ({setShowModalInst}) => {
@@ -29,7 +29,12 @@ export const ModalInstructores = ({setShowModalInst}) => {
     return isError ? errors : null
   }
 
-  const {errors, inputValue, setinputValue, onSubmit} = useForm(initialData, onValidate);   
+  const {
+    errors, 
+    inputValue, 
+    setinputValue, 
+    onSubmit
+  } = useForm(initialData, onValidate, setShowModalInst);   
 
   const onInputChange= (event) => {
     const { name, value, cedula, tipoLicencia } = event.target;
@@ -49,12 +54,12 @@ export const ModalInstructores = ({setShowModalInst}) => {
         <form className="modal" onSubmit={onSubmit}>
           <div className="modal-content">
             <div className='container-button'>
-                <button className="close" 
+                <span className="close" 
                         onClick={closeModal}> 
                           &times;
-                </button>
+                </span>
             </div>
-            <h2 className='title'>Agregar Alumno </h2>
+            <h2 className='title'>Agregar Instructor </h2>
             <label>Nombre:</label>
             <input type="text" 
                    className={errors.nombre ? 'input-error modal-input' : 'modal-input'}
@@ -62,17 +67,18 @@ export const ModalInstructores = ({setShowModalInst}) => {
                    value={inputValue.nombre}
                    onChange={onInputChange}/>
             <label>Cedula:</label>
-            <input type="text" 
+            <input type="number" 
                    className={errors.cedula ? 'input-error modal-input' : 'modal-input'}
                    name='cedula'
                    value={inputValue.cedula}
                    onChange={onInputChange}/>
-            <label>Tipo de Licencia:</label>
+            <label>Tipo de Licencias:</label>
             <input type="text" 
                    className={errors.tipoDeLincecia ? 'input-error modal-input' : 'modal-input'}
                    name='tipoLicencia'
                    value={inputValue.tipoLicencia}
-                   onChange={onInputChange}/>       
+                   onChange={onInputChange}/>  
+            {errors.nombre || errors.cedula || errors.tipoDeLincecia ? <p> Todos los campos son obligatorios </p> : null }     
             <button className='button-agregar' 
                     type='submit'>
                       Agregar

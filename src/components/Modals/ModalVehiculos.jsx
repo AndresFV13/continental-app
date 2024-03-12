@@ -1,43 +1,54 @@
-import React, { useState } from 'react'
+// hooks
 import { useForm } from '../../hooks/useForm'
 
 export const ModalVehiculos = ({setShowModalVehi}) => {
 
   const initialData = {
-    nombre: "",
-    cedula: "",
-    tipoLicencia: ""
+    placa: "",
+    marca: "",
+    tipoLicencia: "",
+    modelo: ""
   }
 
   const onValidate = (inputValue) =>{
     let isError = false
     let errors = {}
 
-    if (!inputValue.nombre.trim()){
-      errors.nombre = true
+    if (!inputValue.placa.trim()){
+      errors.placa = true
       isError = true
     }
-    if (!inputValue.cedula.trim()){
-      errors.cedula = true
+    if (!inputValue.marca.trim()){
+      errors.marca = true
       isError = true
     }
     if (!inputValue.tipoLicencia.trim()){
       errors.tipoDeLincecia = true
       isError = true
     }
+    if (!inputValue.modelo.trim()){
+      errors.modelo = true
+      isError = true
+    }
 
     return isError ? errors : null
   }
 
-  const {errors, inputValue, setinputValue, onSubmit} = useForm(initialData, onValidate);   
+  const {
+    errors, 
+    inputValue, 
+    setinputValue, 
+    onSubmit
+  } = useForm(initialData, onValidate, setShowModalVehi);   
 
   const onInputChange= (event) => {
-    const { name, value, cedula, tipoLicencia } = event.target;
+    const { name, value, marca, tipoLicencia, modelo } = event.target;
     setinputValue({
       ...inputValue,
       [name]: value,
-      [cedula]: value,
-      [tipoLicencia]: value
+      [marca]: value,
+      [tipoLicencia]: value,
+      [modelo]: value
     })
   }
 
@@ -49,30 +60,37 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
         <form className="modal" onSubmit={onSubmit}>
           <div className="modal-content">
             <div className='container-button'>
-                <button className="close" 
+                <span className="close" 
                         onClick={closeModal}> 
                           &times;
-                </button>
+                </span>
             </div>
             <h2 className='title'>Agregar Vehiculo </h2>
-            <label>Nombre:</label>
+            <label>placa:</label>
             <input type="text" 
-                   className={errors.nombre ? 'input-error modal-input' : 'modal-input'}
-                   name='nombre'
-                   value={inputValue.nombre}
+                   className={errors.placa ? 'input-error modal-input' : 'modal-input'}
+                   name='placa'
+                   value={inputValue.placa}
                    onChange={onInputChange}/>
-            <label>Cedula:</label>
+            <label>Marca:</label>
             <input type="text" 
-                   className={errors.cedula ? 'input-error modal-input' : 'modal-input'}
-                   name='cedula'
-                   value={inputValue.cedula}
+                   className={errors.marca ? 'input-error modal-input' : 'modal-input'}
+                   name='marca'
+                   value={inputValue.marca}
+                   onChange={onInputChange}/>
+            <label>Modelo:</label>
+            <input type="text" 
+                   className={errors.modelo ? 'input-error modal-input' : 'modal-input'}
+                   name='modelo'
+                   value={inputValue.modelo}
                    onChange={onInputChange}/>
             <label>Tipo de Licencia:</label>
             <input type="text" 
                    className={errors.tipoDeLincecia ? 'input-error modal-input' : 'modal-input'}
                    name='tipoLicencia'
                    value={inputValue.tipoLicencia}
-                   onChange={onInputChange}/>       
+                   onChange={onInputChange}/>  
+            {errors.placa || errors.marca || errors.tipoDeLincecia || errors.modelo ? <p> Todos los campos son obligatorios </p> : null }     
             <button className='button-agregar' 
                     type='submit'>
                       Agregar
