@@ -1,58 +1,76 @@
 // hooks
-import { useForm } from '../../hooks/useForm'
+import { useState } from 'react';
+import { store } from '../../store/store'
 
 
 export const ModalAlumnos = ({setShowModalALum}) => {
 
-  const initialData = {
+  //State
+  const [infoAlumno, setInfoAlumno] = useState({
     nombre: "",
     cedula: "",
     tipoLicencia: ""
-  }
+  });
 
-  const onValidate = (inputValue) =>{
+  const [errors, setErrors] = useState({})
+  //Actions
+  const addAlumno = store((state) => state.addAlumno)
+
+  const onValidate = () =>{
     let isError = false
     let errors = {}
 
-    if (!inputValue.nombre.trim()){
+    if (!infoAlumno.nombre.trim()){
       errors.nombre = true
       isError = true
     }
-    if (!inputValue.cedula.trim()){
+    if (!infoAlumno.cedula.trim()){
       errors.cedula = true
       isError = true
     }
-    if (!inputValue.tipoLicencia.trim()){
+    if (!infoAlumno.tipoLicencia.trim()){
       errors.tipoDeLincecia = true
       isError = true
     }
 
     return isError ? errors : null
-  }
-
-  const {
-    errors, 
-    inputValue, 
-    setinputValue, 
-    onSubmit
-  } = useForm(initialData, onValidate, setShowModalALum);   
+  }  
 
   const onInputChange= (event) => {
     const { name, value, cedula, tipoLicencia } = event.target;
-    setinputValue({
-      ...inputValue,
+    setInfoAlumno({
+      ...infoAlumno,
       [name]: value,
       [cedula]: value,
       [tipoLicencia]: value
     })
   }
 
+  const onSubmit = (event) => {
+    const err = onValidate(infoAlumno);
+    event.preventDefault()
+
+    if(err === null){
+        console.log("enviando formulario")
+        console.log(infoAlumno)
+        setShowModalALum(false)
+    }else{
+        setErrors(err)
+    }
+}
+
   const closeModal = () => {
     setShowModalALum(false)
   }
+
+  const customOnSubmit = (e) => {
+    e.preventDefault()
+    onSubmit(e);
+    addAlumno(infoAlumno);
+  };
   
   return (
-        <form className="modal" onSubmit={onSubmit}>
+        <form className="modal" onSubmit={customOnSubmit}>
           <div className="modal-content">
             <div className='container-button'>
                 <span className="close" 
@@ -65,21 +83,21 @@ export const ModalAlumnos = ({setShowModalALum}) => {
             <input type="text" 
                    className={errors.nombre ? 'input-error modal-input' : 'modal-input'}
                    name='nombre'
-                   value={inputValue.nombre}
+                   value={infoAlumno.nombre}
                    onChange={onInputChange}
                    required/>
             <label>Cedula:</label>
             <input type="number" 
                    className={errors.cedula ? 'input-error modal-input' : 'modal-input'}
                    name='cedula'
-                   value={inputValue.cedula}
+                   value={infoAlumno.cedula}
                    onChange={onInputChange}
                    required/>
             <label>Tipo de Licencia:</label>
             <input type="text" 
                    className={errors.tipoDeLincecia ? 'input-error modal-input' : 'modal-input'}
                    name='tipoLicencia'
-                   value={inputValue.tipoLicencia}
+                   value={infoAlumno.tipoLicencia}
                    onChange={onInputChange}
                    required/>  
             {errors.nombre || errors.cedula || errors.tipoDeLincecia ? <p> Todos los campos son obligatorios </p> : null }     

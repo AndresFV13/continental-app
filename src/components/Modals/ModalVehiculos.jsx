@@ -1,32 +1,37 @@
-// hooks
-import { useForm } from '../../hooks/useForm'
+import { useState } from "react"
+import { store } from "../../store/store"
 
 export const ModalVehiculos = ({setShowModalVehi}) => {
 
-  const initialData = {
+  // state
+  const [infoVehiculo, setInfoVehiculo] = useState({
     placa: "",
     marca: "",
-    tipoLicencia: "",
-    modelo: ""
-  }
+    modelo: "",
+    licencias: ""
+  })
+  // actions
+  const addVehiculos = store((state) => state.addVehiculos)
+
+  const [errors, setErrors] = useState({})
 
   const onValidate = (inputValue) =>{
     let isError = false
     let errors = {}
 
-    if (!inputValue.placa.trim()){
+    if (!infoVehiculo.placa.trim()){
       errors.placa = true
       isError = true
     }
-    if (!inputValue.marca.trim()){
+    if (!infoVehiculo.marca.trim()){
       errors.marca = true
       isError = true
     }
-    if (!inputValue.tipoLicencia.trim()){
-      errors.tipoDeLincecia = true
+    if (!infoVehiculo.licencias.trim()){
+      errors.licencias = true
       isError = true
     }
-    if (!inputValue.modelo.trim()){
+    if (!infoVehiculo.modelo.trim()){
       errors.modelo = true
       isError = true
     }
@@ -34,20 +39,13 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
     return isError ? errors : null
   }
 
-  const {
-    errors, 
-    inputValue, 
-    setinputValue, 
-    onSubmit
-  } = useForm(initialData, onValidate, setShowModalVehi);   
-
   const onInputChange= (event) => {
-    const { name, value, marca, tipoLicencia, modelo } = event.target;
-    setinputValue({
-      ...inputValue,
+    const { name, value, marca, licencias, modelo } = event.target;
+    setInfoVehiculo({
+      ...infoVehiculo,
       [name]: value,
       [marca]: value,
-      [tipoLicencia]: value,
+      [licencias]: value,
       [modelo]: value
     })
   }
@@ -55,9 +53,24 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
   const closeModal = () => {
     setShowModalVehi(false)
   }
+
+  const customOnSubmit = (e) => {
+    e.preventDefault()
+    addVehiculos(infoVehiculo);
+
+    const err = onValidate();
+
+    if(err === null){
+        console.log("enviando formulario")
+        setShowModalVehi(false)
+    }
+    else{
+      setErrors(err)
+    }
+  };
   
   return (
-        <form className="modal" onSubmit={onSubmit}>
+        <form className="modal" onSubmit={customOnSubmit}>
           <div className="modal-content">
             <div className='container-button'>
                 <span className="close" 
@@ -70,27 +83,27 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
             <input type="text" 
                    className={errors.placa ? 'input-error modal-input' : 'modal-input'}
                    name='placa'
-                   value={inputValue.placa}
-                   onChange={onInputChange}/>
+                   value={infoVehiculo.placa}
+     s              onChange={onInputChange}/>
             <label>Marca:</label>
             <input type="text" 
                    className={errors.marca ? 'input-error modal-input' : 'modal-input'}
                    name='marca'
-                   value={inputValue.marca}
-                   onChange={onInputChange}/>
+                   value={infoVehiculo.marca}
+     s              onChange={onInputChange}/>
             <label>Modelo:</label>
             <input type="text" 
                    className={errors.modelo ? 'input-error modal-input' : 'modal-input'}
                    name='modelo'
-                   value={inputValue.modelo}
-                   onChange={onInputChange}/>
+                   value={infoVehiculo.modelo}
+    s               onChange={onInputChange}/>
             <label>Tipo de Licencia:</label>
             <input type="text" 
                    className={errors.tipoDeLincecia ? 'input-error modal-input' : 'modal-input'}
-                   name='tipoLicencia'
-                   value={inputValue.tipoLicencia}
+                   name='licencias'
+                   value={infoVehiculo.licencias}
                    onChange={onInputChange}/>  
-            {errors.placa || errors.marca || errors.tipoDeLincecia || errors.modelo ? <p> Todos los campos son obligatorios </p> : null }     
+            {errors.placa || errors.marca || errors.licencias || errors.modelo ? <p> Todos los campos son obligatorios </p> : null }     
             <button className='button-agregar' 
                     type='submit'>
                       Agregar

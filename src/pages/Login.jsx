@@ -33,6 +33,10 @@ export const Login = () => {
                     Contraseña:
                     <input className='input-login' type="password" value={password} onChange={handlePasswordChange} required />
                 </label>
+                <div className='d-flex align-items-center mb-3'>
+                    <input className='mr-2' type="checkbox" value={password} onChange={handlePasswordChange}/> 
+                    <p>Recuerdame</p>
+                </div>
                 <button className='button-login' type="submit">Iniciar sesión</button>
                 </form>
             </div>
