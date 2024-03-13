@@ -15,7 +15,7 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
 
   const [errors, setErrors] = useState({})
 
-  const onValidate = (inputValue) =>{
+  const onValidate = () =>{
     let isError = false
     let errors = {}
 

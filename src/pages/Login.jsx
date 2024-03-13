@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-
-// import loginImage from '../../public/img/login-image.jpg' 
+import { Link } from 'react-router-dom';
 
 export const Login = () => {
     const [user, setUser] = useState('');
@@ -37,12 +36,11 @@ export const Login = () => {
                     <input className='mr-2' type="checkbox" value={password} onChange={handlePasswordChange}/> 
                     <p>Recuerdame</p>
                 </div>
-                <button className='button-login' type="submit">Iniciar sesión</button>
+                <div className='d-flex'>
+                    <Link className='button-login' type="submit" to="/">Iniciar sesión</Link>
+                </div>
                 </form>
             </div>
-            {/* <div className='w-60'>
-                <img className='h-90' src={loginImage} alt="Login-image" />
-            </div> */}
         </div>
     );
 }

@@ -477,6 +477,13 @@ body {
   color: #D6D7D8 !important;
 }
 
+.c-white{
+  color: white;
+}
+
+.c-blue-light{
+  color: rgb(37, 157, 255);
+}
 
 .c-gray{
   color: #313131;
@@ -494,6 +501,10 @@ body {
   background-color: #ffff;
 }
 
+.bc-red{
+  background-color: red;
+}
+
 /* aditional styles */
 .tx-n{
   text-decoration: none !important;
@@ -509,6 +520,10 @@ body {
 
 .b-rad{
   border-radius: 0.5rem;
+}
+
+.b-bottom{
+  border-bottom: 1px solid #4B545C;
 }
 
 
@@ -558,12 +573,28 @@ body {
   width: 100%;
   padding: 10px;
   border: none;
-  border-radius: 3px;
+  text-decoration: none;
+  border-radius: 5px;
   background-color: #007bff;
   color: white;
   cursor: pointer;
+  text-align: center;
 }
 
 .button-login:hover {
   background-color: #0056b3;
+}
+
+.calendar-button{
+  position: absolute;
+  bottom: 4rem;
+  right: 1rem;
+}
+
+.calendar-icon{
+  width: 3rem;
+}
+
+.active{
+  color: rgb(37, 157, 255);
 }

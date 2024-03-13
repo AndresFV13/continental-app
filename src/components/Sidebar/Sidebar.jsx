@@ -8,6 +8,7 @@ import userLogo from '../../../public/img/user-logo.png'
 //Styled
 import styled from 'styled-components';
 import '../../components/Modals/style.css'
+import '../../../src/index.css'
 
 // Hooks
 import { useModal } from '../../hooks/useModal'
@@ -16,6 +17,9 @@ import { useModal } from '../../hooks/useModal'
 import { ModalAlumnos } from '../Modals/ModalAlumnos';
 import { ModalVehiculos } from '../Modals/ModalVehiculos';
 import { ModalInstructores } from '../Modals/ModalInstructores';
+
+//icons
+import { InstrucIcon, SignOff, carIcon, userMore } from '../../../public/icons/icons';
 
 const Sidebar = () => {
 
@@ -51,30 +55,43 @@ const Sidebar = () => {
     `;
     return (
         <Sidebar>
-            <Link className='d-flex align-items-center justify-content-start tx-n' to="/">
+            <Link className='d-flex align-items-center justify-content-start tx-n b-bottom' to="/">
                 <img className='w-5 p-3' src={logo} alt="Logo" />
                 <p className='logo-color'> Continental App </p>
             </Link>
-            <ProfileSection className="d-flex align-items-center">
+            <ProfileSection className="d-flex align-items-center b-bottom">
                 <ProfilePic src={userLogo} alt="Alejandro Sabogal" />
                 <ProfileName className='logo-color'> Sebastian Quimbayo </ProfileName>
             </ProfileSection>
             <div className='d-flex flex-column p-2 mt-2'>
-                <button className='m-1 py-2 buttons ft-07' 
-                        onClick={openModalAlum}>
+                <Link to="/"
+                      className='d-flex align-items-center m-1 py-2 buttons ft-07 text-align-center justify-content-flex-start pl-3' 
+                      onClick={openModalAlum}>
+                            <span className='d-flex mr-2'>{userMore}</span>
                              Agregar Alumno 
-                </button>
+                </Link>
                 { showModalAlum === true ? <ModalAlumnos setShowModalALum={setShowModalALum}/> : null }
-                <button className='m-1 py-2 buttons ft-07'
-                        onClick={openModalInst}> 
+                <Link to="/instructores"
+                      className='d-flex align-items-center m-1 py-2 buttons ft-07 text-align-center justify-content-flex-start pl-3' 
+                      onClick={openModalInst}> 
+                            <span className='d-flex mr-2'>{InstrucIcon}</span>
                             Agregar instructor 
-                </button>
+                </Link>
                 { showModalInst === true ? <ModalInstructores setShowModalInst={setShowModalInst}/> : null }
-                <button className='m-1 py-2 buttons ft-07'
-                        onClick={openModalVehi}> 
+                <Link to="/vehiculos"
+                      className='d-flex align-items-center m-1 py-2 buttons ft-07 text-align-center justify-content-flex-start pl-3' 
+                      onClick={openModalVehi}>
+                            <span className='d-flex mr-2'>{carIcon}</span>
                             Agregar Vehiculo 
-                </button>
+                </Link>
                 { showModalVehi === true ? <ModalVehiculos setShowModalVehi={setShowModalVehi}/> : null }
+            </div>
+            <div className='d-flex flex-column p-2 mt-2'>
+                <Link className='d-flex align-items-center m-1 py-2 buttons ft-07 text-align-center justify-content-flex-start pl-3'
+                    to="/login">
+                    <span className='d-flex mr-2'>{SignOff}</span>
+                    Cerrar Sesion
+                </Link>
             </div>
         </Sidebar>
     )

@@ -7,6 +7,7 @@ import { Alumnos } from "../pages/Alumnos";
 import { Instructores } from "../pages/Instructores";
 import { Vehiculos } from "../pages/Vehiculos";
 import { Login } from "../pages/Login";
+import Calendar from "../components/calendar/Calendar";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
                 path: '/vehiculos',
                 element: < Vehiculos />,
             },
+            {
+                path: '/calendar',
+                element: <Calendar />
+            }
         ]
     },
 ]);

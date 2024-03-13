@@ -73,7 +73,7 @@ export const ModalInstructores = ({setShowModalInst}) => {
                           &times;
                 </span>
             </div>
-            <h2 className='title'>Agregar Alumno </h2>
+            <h2 className='title'>Agregar Instructor </h2>
             <label>Nombre:</label>
             <input type="text" 
                    className={errors.nombre ? 'input-error modal-input' : 'modal-input'}
