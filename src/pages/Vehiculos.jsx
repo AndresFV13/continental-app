@@ -41,20 +41,19 @@ export const Vehiculos = () => {
             <tbody>
                 {
                     vehiculos.map((vehiculo) => (
-                        <tr className='d-flex justify-content-around bor-gray text-align-center' key={vehiculo.placa}>
+                        <tr className='d-flex justify-content-center bor-gray text-align-center align-items-center' key={vehiculo.placa}>
                             <td className='m-3 w-20'> N° </td>
                             <td className='m-3 w-20'> {vehiculo.placa} </td>
                             <td className='m-3 w-20'> {vehiculo.marca} </td>
                             <td className='m-3 w-20'> {vehiculo.modelo} </td>
                             <td className='m-3 w-20'> {vehiculo.licencias} </td>
                             <td className='m-3 w-20'> <span className='bc-red c-white b-rad p-1 b-rad'> 50% </span> </td>
-                            <td className='m-3 w-20'> Horarios </td>
+                            <td className='m-3 w-20'> <CalendarButton/> </td>
                         </tr>
                     ))
                 }
             </tbody>
         </table>
-        <CalendarButton/>
     </div>
   )
 }

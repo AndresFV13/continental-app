@@ -1,6 +1,7 @@
 // hooks
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { store } from '../../store/store'
+import { useModal } from '../../hooks/useModal';
 
 
 export const ModalAlumnos = ({setShowModalALum}) => {
@@ -12,7 +13,13 @@ export const ModalAlumnos = ({setShowModalALum}) => {
     tipoLicencia: ""
   });
 
+  const { nombre, cedula, tipoLicencia } = infoAlumno;
+
+  const [disabledButton, setDisabledButton] = useState(true);
+
   const [errors, setErrors] = useState({})
+
+  const {showModalAlum, openModalAlum} = useModal();
   //Actions
   const addAlumno = store((state) => state.addAlumno)
 
@@ -20,15 +27,15 @@ export const ModalAlumnos = ({setShowModalALum}) => {
     let isError = false
     let errors = {}
 
-    if (!infoAlumno.nombre.trim()){
+    if (nombre.trim() === ''){
       errors.nombre = true
       isError = true
     }
-    if (!infoAlumno.cedula.trim()){
+    if (cedula.trim() === ''){
       errors.cedula = true
       isError = true
     }
-    if (!infoAlumno.tipoLicencia.trim()){
+    if (tipoLicencia.trim() === ''){
       errors.tipoDeLincecia = true
       isError = true
     }
@@ -46,18 +53,15 @@ export const ModalAlumnos = ({setShowModalALum}) => {
     })
   }
 
-  const onSubmit = (event) => {
+  const onSubmit = () => {
     const err = onValidate(infoAlumno);
-    event.preventDefault()
 
     if(err === null){
-        console.log("enviando formulario")
-        console.log(infoAlumno)
         setShowModalALum(false)
     }else{
         setErrors(err)
     }
-}
+  }
 
   const closeModal = () => {
     setShowModalALum(false)
@@ -65,9 +69,19 @@ export const ModalAlumnos = ({setShowModalALum}) => {
 
   const customOnSubmit = (e) => {
     e.preventDefault()
-    onSubmit(e);
+    
+    onSubmit();
+    if (nombre.trim() === '' || cedula.trim() === '' || tipoLicencia.trim() === '') return;
     addAlumno(infoAlumno);
   };
+
+  useEffect(() => {
+    if (nombre.trim() === '' || cedula.trim() === '' || tipoLicencia.trim() === '') {
+      setDisabledButton(true);
+    } else {
+      setDisabledButton(false);
+    }
+  }, [nombre, cedula, tipoLicencia]);
   
   return (
         <form className="modal" onSubmit={customOnSubmit}>
@@ -79,30 +93,30 @@ export const ModalAlumnos = ({setShowModalALum}) => {
                 </span>
             </div>
             <h2 className='title'>Agregar Alumno </h2>
-            <label>Nombre:</label>
+            <label className='text-aling-left'>Nombre:</label>
             <input type="text" 
                    className={errors.nombre ? 'input-error modal-input' : 'modal-input'}
                    name='nombre'
                    value={infoAlumno.nombre}
                    onChange={onInputChange}
-                   required/>
-            <label>Cedula:</label>
+                  />
+            <label className='text-aling-left'>Cedula:</label>
             <input type="number" 
                    className={errors.cedula ? 'input-error modal-input' : 'modal-input'}
                    name='cedula'
                    value={infoAlumno.cedula}
                    onChange={onInputChange}
-                   required/>
-            <label>Tipo de Licencia:</label>
+                  />
+            <label className='text-aling-left'>Tipo de Licencia:</label>
             <input type="text" 
                    className={errors.tipoDeLincecia ? 'input-error modal-input' : 'modal-input'}
                    name='tipoLicencia'
                    value={infoAlumno.tipoLicencia}
                    onChange={onInputChange}
-                   required/>  
+                  />  
             {errors.nombre || errors.cedula || errors.tipoDeLincecia ? <p> Todos los campos son obligatorios </p> : null }     
             <button className='button-agregar' 
-                    type='submit'>
+                    type='submit' >
                       Agregar
             </button>
           </div>

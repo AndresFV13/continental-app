@@ -36,10 +36,11 @@ export const Login = () => {
                     <input className='mr-2' type="checkbox" value={password} onChange={handlePasswordChange}/> 
                     <p>Recuerdame</p>
                 </div>
-                <div className='d-flex'>
+                <div className='d-flex flex-column'>
                     <Link className='button-login' type="submit" to="/">Iniciar sesión</Link>
+                    <Link className='button-register mt-3'> Registrarme </Link>
                 </div>
-                </form>
+                </form> 
             </div>
         </div>
     );

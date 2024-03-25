@@ -1,7 +1,13 @@
 import { create } from 'zustand'
 
 export const store = create( (set) => ({
-    alumnos: [],
+    alumnos: [
+        {
+            nombre: "Sebastian",
+            cedula: 129831092890,
+            tipoLicencia: "A1, B2"
+        }
+    ],
     instructores: [],
     vehiculos: [],
 

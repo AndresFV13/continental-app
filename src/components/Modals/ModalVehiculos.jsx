@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { store } from "../../store/store"
 
 export const ModalVehiculos = ({setShowModalVehi}) => {
@@ -10,28 +10,32 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
     modelo: "",
     licencias: ""
   })
-  // actions
-  const addVehiculos = store((state) => state.addVehiculos)
+
+  const { placa, marca, modelo, licencias } = infoVehiculo;
+
+  const [disabledButton, setDisabledButton] = useState(true);
 
   const [errors, setErrors] = useState({})
+  // actions
+  const addVehiculos = store((state) => state.addVehiculos)
 
   const onValidate = () =>{
     let isError = false
     let errors = {}
 
-    if (!infoVehiculo.placa.trim()){
+    if (placa.trim() === '' ){
       errors.placa = true
       isError = true
     }
-    if (!infoVehiculo.marca.trim()){
+    if (marca.trim() === '' ){
       errors.marca = true
       isError = true
     }
-    if (!infoVehiculo.licencias.trim()){
+    if (licencias.trim() === '' ){
       errors.licencias = true
       isError = true
     }
-    if (!infoVehiculo.modelo.trim()){
+    if (modelo.trim() === '' ){
       errors.modelo = true
       isError = true
     }
@@ -50,24 +54,36 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
     })
   }
 
+  const onSubmit = () => {
+    const err = onValidate(infoVehiculo);
+
+    if(err === null){
+        setShowModalVehi(false)
+    }else{
+        setErrors(err)
+    }
+  }
+
   const closeModal = () => {
     setShowModalVehi(false)
   }
 
   const customOnSubmit = (e) => {
     e.preventDefault()
+
+    onSubmit();
+    if (placa.trim() === '' || modelo.trim() === '' || licencias.trim() === '' || marca.trim() === '' ) return;
     addVehiculos(infoVehiculo);
-
-    const err = onValidate();
-
-    if(err === null){
-        console.log("enviando formulario")
-        setShowModalVehi(false)
-    }
-    else{
-      setErrors(err)
-    }
   };
+
+  useEffect(() => {
+    if (placa.trim() === '' || modelo.trim() === '' || licencias.trim() === '' || marca.trim() === '' ) {
+      setDisabledButton(true);
+    } else {
+      setDisabledButton(false);
+    }
+  }, [placa, modelo, licencias, marca]);
+  
   
   return (
         <form className="modal" onSubmit={customOnSubmit}>
@@ -83,23 +99,23 @@ export const ModalVehiculos = ({setShowModalVehi}) => {
             <input type="text" 
                    className={errors.placa ? 'input-error modal-input' : 'modal-input'}
                    name='placa'
-                   value={infoVehiculo.placa}
-     s              onChange={onInputChange}/>
+                   value={infoVehiculo.placa}             
+                   onChange={onInputChange}/>
             <label>Marca:</label>
             <input type="text" 
                    className={errors.marca ? 'input-error modal-input' : 'modal-input'}
                    name='marca'
                    value={infoVehiculo.marca}
-     s              onChange={onInputChange}/>
+                   onChange={onInputChange}/>
             <label>Modelo:</label>
             <input type="text" 
                    className={errors.modelo ? 'input-error modal-input' : 'modal-input'}
                    name='modelo'
                    value={infoVehiculo.modelo}
-    s               onChange={onInputChange}/>
+                   onChange={onInputChange}/>
             <label>Tipo de Licencia:</label>
             <input type="text" 
-                   className={errors.tipoDeLincecia ? 'input-error modal-input' : 'modal-input'}
+                   className={errors.licencias ? 'input-error modal-input' : 'modal-input'}
                    name='licencias'
                    value={infoVehiculo.licencias}
                    onChange={onInputChange}/>  

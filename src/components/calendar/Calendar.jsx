@@ -13,10 +13,17 @@ import {
   ConfirmationDialog,
   Toolbar,
   ViewSwitcher,
-  MonthView
+  MonthView,
+  Resources
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
+import { amber, red, green } from "@mui/material/colors";
+import { store } from '../../store/store';
+
+// const storeAlumnos = store((state) => state.alumnos )
+
+// console.log(storeAlumnos);
 
 const recurrenceAppointments = [{
     title: 'Website Re-Design Plan',
@@ -25,58 +32,27 @@ const recurrenceAppointments = [{
     id: 100,
     rRule: 'FREQ=DAILY;COUNT=3',
     exDate: '20180628T063500Z,20180626T061500Z',
-  }, {
-    title: 'Book Flights to San Fran for Sales Trip',
-    startDate: new Date(2018, 5, 25, 12, 11),
-    endDate: new Date(2018, 5, 25, 13, 0),
-    id: 101,
-    rRule: 'FREQ=DAILY;COUNT=4',
-    exDate: '20180627T091100Z',
-    allDay: true,
-  }, {
-    title: 'Install New Router in Dev Room',
-    startDate: new Date(2018, 5, 25, 13, 30),
-    endDate: new Date(2018, 5, 25, 14, 35),
-    id: 102,
-    rRule: 'FREQ=DAILY;COUNT=5',
-  }, {
-    title: 'Approve Personal Computer Upgrade Plan',
-    startDate: new Date(2018, 5, 26, 10, 0),
-    endDate: new Date(2018, 5, 26, 11, 0),
+  }
+  ];
+
+const resourcesData = [
+  {
+    text: "Cancelada",
+    id: 1,
+    color: red,
+  },
+  {
+    text: "Pendiente",
+    id: 2,
+    color: amber,
+  },
+  {
+    text: "Terminada",
     id: 3,
-    location: 'Room 2',
-  }, {
-    title: 'Final Budget Review',
-    startDate: new Date(2018, 5, 27, 11, 45),
-    endDate: new Date(2018, 5, 27, 13, 20),
-    id: 4,
-    location: 'Room 2',
-  }, {
-    title: 'New Brochures',
-    startDate: new Date(2018, 5, 26, 14, 40),
-    endDate: new Date(2018, 5, 26, 15, 45),
-    id: 5,
-    location: 'Room 2',
-  }, {
-    title: 'Install New Database',
-    startDate: new Date(2018, 5, 28, 9, 45),
-    endDate: new Date(2018, 5, 28, 11, 15),
-    id: 6,
-    location: 'Room 1',
-  }, {
-    title: 'Approve New Online Marketing Strategy',
-    startDate: new Date(2018, 5, 29, 11, 45),
-    endDate: new Date(2018, 5, 29, 13, 5),
-    id: 7,
-    location: 'Room 3',
-  }, {
-    title: 'Create Icons for Website',
-    startDate: new Date(2018, 5, 29, 10, 0),
-    endDate: new Date(2018, 5, 29, 11, 30),
-    id: 12,
-    location: 'Room 2',
-  }];
-  
+    color: green,
+  },
+];
+
 
 const dragDisableIds = new Set([3, 8, 10, 12]);
 const allowDrag = ({ id }) => !dragDisableIds.has(id);
@@ -91,6 +67,8 @@ const appointmentComponent = (props) => {
 const Demo = () => {
   const [data, setData] = useState(recurrenceAppointments);
   const [currentDate] = useState(new Date('2018-06-27'));
+  const { resources } = useState(resourcesData);
+
 
   const commitChanges = ({ added, changed, deleted }) => {
     setData((currentData) => {
@@ -106,6 +84,7 @@ const Demo = () => {
       if (deleted !== undefined) {
         updatedData = updatedData.filter(appointment => appointment.id !== deleted);
       }
+      console.log(updatedData);
       return updatedData;
     });
   };
@@ -141,7 +120,13 @@ const Demo = () => {
       yearsLabel: 'Años',
       ofLabel: 'De',
       everyLabel: 'Siempre',
-      detailsLabel: 'Detalles'
+      detailsLabel: 'Detalles',
+      discardButton: 'Descartar',
+      deleteButton: 'Eliminar',
+      cancelButton: 'Cancelar',
+      confirmDeleteMessage: '¿Estás seguro de que quieres eliminar este evento?',
+      confirmCancelMessage: '¿Estás seguro de que quieres salir sin guardar?',
+      commitButton: "Guardar"
     },
   };
 
@@ -154,6 +139,7 @@ const Demo = () => {
       <Scheduler
         data={data}
         height={window.innerHeight - 120}
+        locale={'es'}
       >
         <ViewState
           currentDate={currentDate}
@@ -162,7 +148,9 @@ const Demo = () => {
         <EditingState
           onCommitChanges={commitChanges}
         />
-        <EditRecurrenceMenu />
+        <EditRecurrenceMenu 
+          messages={getAllDayMessages('es-ES')}
+        />
         <DayView
             startDayHour={9}
             endDayHour={18}
@@ -172,7 +160,9 @@ const Demo = () => {
           endDayHour={16}
         />
         <MonthView />
-        <ConfirmationDialog />
+        <ConfirmationDialog
+          messages={getAllDayMessages('es-ES')}
+        />
         <Toolbar />
           <ViewSwitcher />
         <Appointments
@@ -183,6 +173,8 @@ const Demo = () => {
             showDeleteButton
           />
         <AllDayPanel messages={getAllDayMessages('es-ES')}/>
+
+        
         <DragDropProvider
           allowDrag={allowDrag}
         />

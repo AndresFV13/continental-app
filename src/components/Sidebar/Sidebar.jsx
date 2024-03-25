@@ -56,7 +56,7 @@ const Sidebar = () => {
     return (
         <Sidebar>
             <Link className='d-flex align-items-center justify-content-start tx-n b-bottom' to="/">
-                <img className='w-5 p-3' src={logo} alt="Logo" />
+                <img className='w-4 p-3' src={logo} alt="Logo" />
                 <p className='logo-color'> Continental App </p>
             </Link>
             <ProfileSection className="d-flex align-items-center b-bottom">

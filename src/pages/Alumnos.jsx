@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // store global
 import { store } from '../store/store'
@@ -6,10 +6,17 @@ import { store } from '../store/store'
 //components
 import { CalendarButton } from '../components/calendar/CalendarButton'
 import { Search } from '../components/search/Search'
+import { ModalAlumnos } from '../components/Modals/ModalAlumnos'
+
+//icons
+import { deleteIcon, editIcon } from '../../public/icons/icons'
+import { useModal } from '../hooks/useModal'
 
 export const Alumnos = () => {
 
   const alumnos = store((state) => state.alumnos)
+
+  const {showModalAlum, openModalAlum} = useModal();
 
     useEffect(() => {
         console.log(alumnos);
@@ -21,7 +28,7 @@ export const Alumnos = () => {
             <p className='ft-2'> Alumnos </p>
         </div>
         <Search />
-        <table className='mt-5 w-90'> 
+        <table className='mt-5 w-90 text-align-center'> 
             <thead>
                 <tr className='d-flex aling-items-start bor-gray'>
                     <th className='m-3'>Resultados de la busqueda</th>
@@ -36,25 +43,32 @@ export const Alumnos = () => {
                     <td className='m-3 w-20'> Instructor </td>
                     <td className='m-3 w-20'> Horas completadas </td>
                     <td className='m-3 w-20'> Horarios </td>
+                    <td className='m-1 w-5'></td>
                 </tr>
             </tbody>
             <tbody>
                 {
                     alumnos.map((alumno, index) => (
-                        <tr className='d-flex justify-content-around bor-gray text-align-center' key={alumno.cedula}>
+                        <tr className='d-flex justify-content-center bor-gray align-items-center' key={alumno.cedula}>
                             <td className='m-3 w-20'> {index + 1} </td>
                             <td className='m-3 w-20'> {alumno.nombre} </td>
                             <td className='m-3 w-20'> {alumno.cedula} </td>
                             <td className='m-3 w-20'> {alumno.tipoLicencia} </td>
                             <td className='m-3 w-20'> Juan Diaz </td>
-                            <td className='m-3 w-20'> <span className='bc-red c-white b-rad p-1 b-rad'> 50% </span> </td>
-                            <td className='m-3 w-20'> Horarios </td>
+                            <td className='m-3 w-20'> <span className='bc-red c-white b-rad p-1 b-rad'> 0% </span> </td>
+                            <td className='m-3 w-20'> <CalendarButton/> </td>
+                            <td className='d-flex flex-column align-items-center m-1 w-5'>
+                                <span onClick={openModalAlum}>
+                                    <span>{editIcon}</span>
+                                    {showModalAlum === true ? <ModalAlumnos/> : null}
+                                </span>
+                                <span>{deleteIcon}</span>
+                            </td>
                         </tr>
                     ))
                 }
             </tbody>
         </table>
-        <CalendarButton/>
     </div>
   )
 }

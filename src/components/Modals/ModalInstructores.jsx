@@ -1,17 +1,23 @@
 // hooks
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { store } from '../../store/store'
 
 
 export const ModalInstructores = ({setShowModalInst}) => {
 
   const [errors, setErrors] = useState({})
+
+  const [disabledButton, setDisabledButton] = useState(true);
+
   //State
   const [infoInstructor, setInfoInstructor] = useState({
     nombre: "",
     cedula: "",
     licencias: ""
   });
+
+  const { nombre, cedula, licencias } = infoInstructor
+
   //Actions
   const addInstructor = store((state) => state.addInstructor)
 
@@ -19,15 +25,15 @@ export const ModalInstructores = ({setShowModalInst}) => {
     let isError = false
     let errors = {}
 
-    if (!infoInstructor.nombre.trim()){
+    if (!nombre.trim()){
       errors.nombre = true
       isError = true
     }
-    if (!infoInstructor.cedula.trim()){
+    if (!cedula.trim()){
       errors.cedula = true
       isError = true
     }
-    if (!infoInstructor.licencias.trim()){
+    if (!licencias.trim()){
       errors.licencias = true
       isError = true
     }
@@ -45,24 +51,35 @@ export const ModalInstructores = ({setShowModalInst}) => {
     })
   }
 
+  const onSubmit = () => {
+    const err = onValidate(infoInstructor);
+
+    if(err === null){
+        console.log("enviando formulario")
+        setShowModalInst(false)
+    }else{
+        setErrors(err)
+    }
+  }
+
   const closeModal = () => {
     setShowModalInst(false)
   }
 
   const customOnSubmit = (e) => {
     e.preventDefault()
+    onSubmit();
+    if (nombre.trim() === '' || cedula.trim() === '' || licencias.trim() === '') return;
     addInstructor(infoInstructor);
-
-    const err = onValidate();
-
-    if(err === null){
-        console.log("enviando formulario")
-        setShowModalInst(false)
-    }
-    else{
-      setErrors(err)
-    }
   };
+
+   useEffect(() => {
+    if (nombre.trim() === '' || cedula.trim() === '' || licencias.trim() === '') {
+      setDisabledButton(true);
+    } else {
+      setDisabledButton(false);
+    }
+  }, [nombre, cedula, licencias]);
   
   return (
         <form className="modal" onSubmit={customOnSubmit}>
@@ -79,22 +96,19 @@ export const ModalInstructores = ({setShowModalInst}) => {
                    className={errors.nombre ? 'input-error modal-input' : 'modal-input'}
                    name='nombre'
                    value={infoInstructor.nombre}
-                   onChange={onInputChange}
-                   required/>
+                   onChange={onInputChange}/>
             <label>Cedula:</label>
             <input type="number" 
                    className={errors.cedula ? 'input-error modal-input' : 'modal-input'}
                    name='cedula'
                    value={infoInstructor.cedula}
-                   onChange={onInputChange}
-                   required/>
+                   onChange={onInputChange}/>
             <label>Tipo de Licencia:</label>
             <input type="text" 
-                   className={errors.tipoDeLincecia ? 'input-error modal-input' : 'modal-input'}
+                   className={errors.licencias ? 'input-error modal-input' : 'modal-input'}
                    name='licencias'
                    value={infoInstructor.licencias}
-                   onChange={onInputChange}
-                   required/>  
+                   onChange={onInputChange}/>  
             {errors.nombre || errors.cedula || errors.licencias ? <p> Todos los campos son obligatorios </p> : null }     
             <button className='button-agregar' 
                     type='submit'>

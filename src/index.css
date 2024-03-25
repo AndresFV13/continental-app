@@ -131,6 +131,10 @@ body {
   text-align: center;
 }
 
+.text-align-left{
+  text-align: left;
+}
+
 .font-weigth-6{
   font-weight: 600;
 }
@@ -164,6 +168,10 @@ body {
 }
 
 .w-5 {
+  width: 5%;
+}
+
+.w-4 {
   width: 4rem;
 }
 
@@ -569,6 +577,7 @@ body {
   border: 1px solid #ccc;
 }
 
+.button-register,
 .button-login {
   width: 100%;
   padding: 10px;
@@ -586,15 +595,18 @@ body {
 }
 
 .calendar-button{
-  position: absolute;
-  bottom: 4rem;
-  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .calendar-icon{
   width: 3rem;
+  color: #007BFF;
 }
 
-.active{
-  color: rgb(37, 157, 255);
+.edits-icons{
+  width: 1.5rem;
+  color: #007BFF;
+  cursor: pointer;
 }

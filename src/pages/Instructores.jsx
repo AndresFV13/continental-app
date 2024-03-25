@@ -40,20 +40,19 @@ export const Instructores = () => {
             <tbody>
                 {
                     instructores.map((instructor) => (
-                        <tr className='d-flex justify-content-around bor-gray text-align-center' key={instructor.cedula}>
+                        <tr className='d-flex justify-content-center bor-gray text-align-center align-items-center' key={instructor.cedula}>
                             <td className='m-3 w-20'> N° </td>
                             <td className='m-3 w-20'> {instructor.nombre} </td>
                             <td className='m-3 w-20'> {instructor.cedula} </td>
                             <td className='m-3 w-20'> {instructor.licencias} </td>
                             <td className='m-3 w-20'> Instructor </td>
                             <td className='m-3 w-20'> <span className='bc-red c-white b-rad p-1 b-rad'> 50% </span> </td>
-                            <td className='m-3 w-20'> Horarios </td>
+                            <td className='m-3 w-20'> <CalendarButton/> </td>
                         </tr>
                     ))
                 }
             </tbody>
         </table>
-        <CalendarButton/>
     </div>
   )
 }
