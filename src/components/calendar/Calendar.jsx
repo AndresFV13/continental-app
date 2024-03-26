@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Scheduler,
@@ -25,14 +25,23 @@ import { store } from '../../store/store';
 
 // console.log(storeAlumnos);
 
-const recurrenceAppointments = [{
-    title: 'Website Re-Design Plan',
-    startDate: new Date(2018, 5, 25, 9, 15),
-    endDate: new Date(2018, 5, 25, 11, 30),
-    id: 100,
-    rRule: 'FREQ=DAILY;COUNT=3',
-    exDate: '20180628T063500Z,20180626T061500Z',
-  }
+const recurrenceAppointments = [
+    {
+      title: 'Website Re-Design Plan',
+      startDate: new Date(2024, 2, 25, 9, 15),
+      endDate: new Date(2024, 2, 25, 11, 30),
+      id: 100,
+      rRule: 'FREQ=DAILY;COUNT=3',
+      exDate: '20240628T063500Z,20240626T061500Z',
+    },
+    {
+      title: 'Alejandro Test',
+      startDate: new Date(2024, 2, 25, 9, 15),
+      endDate: new Date(2024, 2, 25, 11, 30),
+      id: 101,
+      rRule: 'FREQ=DAILY;COUNT=3',
+      exDate: '20240628T063500Z,20240626T061500Z',
+    },
   ];
 
 const resourcesData = [
@@ -64,9 +73,9 @@ const appointmentComponent = (props) => {
   return <Appointments.Appointment {...props} style={{ ...props.style, cursor: 'not-allowed' }} />;
 };
 
-const Demo = () => {
-  const [data, setData] = useState(recurrenceAppointments);
-  const [currentDate] = useState(new Date('2018-06-27'));
+const Calendar = ({ calendarData }) => {
+  const [data, setData] = useState(calendarData);
+  const [currentDate, setCurrentDate] = useState(null);
   const { resources } = useState(resourcesData);
 
 
@@ -132,8 +141,18 @@ const Demo = () => {
 
   const getAllDayMessages = locale => allDayLocalizationMessages[locale];
 
-  if (!window) return;
+  
+  useEffect(() => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    setCurrentDate(new Date(year, month, day));
+  }, []);
 
+  if (!window || !currentDate) return;
+
+  
   return (
     <Paper>
       <Scheduler
@@ -186,4 +205,4 @@ const Demo = () => {
   );
 };
 
-export default Demo;
+export default Calendar;

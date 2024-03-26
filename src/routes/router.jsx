@@ -7,7 +7,7 @@ import { Alumnos } from "../pages/Alumnos";
 import { Instructores } from "../pages/Instructores";
 import { Vehiculos } from "../pages/Vehiculos";
 import { Login } from "../pages/Login";
-import Calendar from "../components/calendar/Calendar";
+import CalendarPage from "../pages/Calendar";
 
 const router = createBrowserRouter([
     {
@@ -32,8 +32,8 @@ const router = createBrowserRouter([
                 element: < Vehiculos />,
             },
             {
-                path: '/calendar',
-                element: <Calendar />
+                path: '/calendar/:userId',
+                element: <CalendarPage />
             }
         ]
     },

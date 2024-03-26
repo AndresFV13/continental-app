@@ -56,7 +56,7 @@ export const Alumnos = () => {
                             <td className='m-3 w-20'> {alumno.tipoLicencia} </td>
                             <td className='m-3 w-20'> Juan Diaz </td>
                             <td className='m-3 w-20'> <span className='bc-red c-white b-rad p-1 b-rad'> 0% </span> </td>
-                            <td className='m-3 w-20'> <CalendarButton/> </td>
+                            <td className='m-3 w-20'> <CalendarButton userId={alumno.cedula} /> </td>
                             <td className='d-flex flex-column align-items-center m-1 w-5'>
                                 <span onClick={openModalAlum}>
                                     <span>{editIcon}</span>

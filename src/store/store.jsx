@@ -6,6 +6,11 @@ export const store = create( (set) => ({
             nombre: "Sebastian",
             cedula: 129831092890,
             tipoLicencia: "A1, B2"
+        },
+        {
+            nombre: "Alejandro",
+            cedula: 1110602464,
+            tipoLicencia: "A1, B2"
         }
     ],
     instructores: [],
