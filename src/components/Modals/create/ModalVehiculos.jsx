@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { store } from "../../store/store"
+import { store } from "../../../store/store";
 
 export const ModalVehiculos = ({setShowModalVehi}) => {
 

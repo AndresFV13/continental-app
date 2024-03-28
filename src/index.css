@@ -577,6 +577,10 @@ body {
   border: 1px solid #ccc;
 }
 
+.input-error{
+  border: 1px solid red;
+}
+
 .button-register,
 .button-login {
   width: 100%;

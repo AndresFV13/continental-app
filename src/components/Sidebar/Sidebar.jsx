@@ -14,12 +14,13 @@ import '../../../src/index.css'
 import { useModal } from '../../hooks/useModal'
 
 // Modales
-import { ModalAlumnos } from '../Modals/ModalAlumnos';
-import { ModalVehiculos } from '../Modals/ModalVehiculos';
-import { ModalInstructores } from '../Modals/ModalInstructores';
+import { ModalAlumnos } from '../Modals/create/ModalAlumnos';
+import { ModalInstructores } from '../Modals/create/ModalInstructores';
+import { ModalVehiculos } from '../Modals/create/ModalVehiculos'
 
 //icons
 import { InstrucIcon, SignOff, carIcon, userMore } from '../../../public/icons/icons';
+
 
 const Sidebar = () => {
 

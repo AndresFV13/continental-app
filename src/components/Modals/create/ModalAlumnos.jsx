@@ -1,8 +1,7 @@
-// hooks
-import { useEffect, useState } from 'react';
-import { store } from '../../store/store'
-import { useModal } from '../../hooks/useModal';
 
+import { useEffect, useState } from 'react';
+//state global
+import { store } from '../../../store/store'
 
 export const ModalAlumnos = ({setShowModalALum}) => {
 
@@ -19,7 +18,6 @@ export const ModalAlumnos = ({setShowModalALum}) => {
 
   const [errors, setErrors] = useState({})
 
-  const {showModalAlum, openModalAlum} = useModal();
   //Actions
   const addAlumno = store((state) => state.addAlumno)
 
@@ -44,12 +42,10 @@ export const ModalAlumnos = ({setShowModalALum}) => {
   }  
 
   const onInputChange= (event) => {
-    const { name, value, cedula, tipoLicencia } = event.target;
+    const { name, value } = event.target;
     setInfoAlumno({
       ...infoAlumno,
       [name]: value,
-      [cedula]: value,
-      [tipoLicencia]: value
     })
   }
 

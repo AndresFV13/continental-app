@@ -1,6 +1,7 @@
 // hooks
 import { useEffect, useState } from 'react';
-import { store } from '../../store/store'
+import { store } from '../../../store/store';
+
 
 
 export const ModalInstructores = ({setShowModalInst}) => {
@@ -46,8 +47,6 @@ export const ModalInstructores = ({setShowModalInst}) => {
     setInfoInstructor({
       ...infoInstructor,
       [name]: value,
-      [cedula]: value,
-      [licencias]: value
     })
   }
 

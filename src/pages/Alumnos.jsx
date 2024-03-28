@@ -6,17 +6,23 @@ import { store } from '../store/store'
 //components
 import { CalendarButton } from '../components/calendar/CalendarButton'
 import { Search } from '../components/search/Search'
-import { ModalAlumnos } from '../components/Modals/ModalAlumnos'
+
+//modals
+import { ModalEditAlumnos } from '../components/Modals/edit/ModalEditAlumnos'
 
 //icons
 import { deleteIcon, editIcon } from '../../public/icons/icons'
-import { useModal } from '../hooks/useModal'
 
 export const Alumnos = () => {
 
   const alumnos = store((state) => state.alumnos)
+  const infoAlumno = store((state) => state.alumnos)
 
-  const {showModalAlum, openModalAlum} = useModal();
+  const [editModalAlumn, setEditModalAlumn] = useState(false);
+
+  const closeModalAlum = () => {
+    setEditModalAlumn(!editModalAlumn)
+  }
 
     useEffect(() => {
         console.log(alumnos);
@@ -58,9 +64,9 @@ export const Alumnos = () => {
                             <td className='m-3 w-20'> <span className='bc-red c-white b-rad p-1 b-rad'> 0% </span> </td>
                             <td className='m-3 w-20'> <CalendarButton userId={alumno.cedula} /> </td>
                             <td className='d-flex flex-column align-items-center m-1 w-5'>
-                                <span onClick={openModalAlum}>
-                                    <span>{editIcon}</span>
-                                    {showModalAlum === true ? <ModalAlumnos/> : null}
+                                <span>
+                                    <span onClick={closeModalAlum}>{editIcon}</span>
+                                    {editModalAlumn === true ? <ModalEditAlumnos closeModalAlum={closeModalAlum}/> : null}
                                 </span>
                                 <span>{deleteIcon}</span>
                             </td>

@@ -1,14 +1,24 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 //store
 import { store } from '../store/store';
 
 // Components
 import { CalendarButton } from '../components/calendar/CalendarButton';
 import { Search } from '../components/search/Search';
+import { ModalEditInstruct } from '../components/Modals/edit/ModalEditInstruc';
+
+// icons
+import { deleteIcon, editIcon } from '../../public/icons/icons';
 
 export const Instructores = () => {
 
   const instructores = store((state) => state.instructores)
+
+  const [editModalInstruc, setEditModalInstruc] = useState(false)
+
+  const closeModalInstruc = () => {
+    setEditModalInstruc(!editModalInstruc)
+  }
 
     useEffect(() => {
         console.log(instructores);
@@ -48,6 +58,13 @@ export const Instructores = () => {
                             <td className='m-3 w-20'> Instructor </td>
                             <td className='m-3 w-20'> <span className='bc-red c-white b-rad p-1 b-rad'> 50% </span> </td>
                             <td className='m-3 w-20'> <CalendarButton/> </td>
+                            <td className='d-flex flex-column align-items-center m-1 w-5'>
+                                <span>
+                                    <span onClick={closeModalInstruc}>{editIcon}</span>
+                                    {editModalInstruc === true ? <ModalEditInstruct closeModalInstruc={closeModalInstruc}/> : null}
+                                </span>
+                                <span>{deleteIcon}</span>
+                            </td>
                         </tr>
                     ))
                 }

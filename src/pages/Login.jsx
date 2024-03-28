@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const Login = () => {
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
-  
+
     const handleUserChange = (e) => {
       setUser(e.target.value);
     };
@@ -15,8 +15,7 @@ export const Login = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log('user:', user);
-      console.log('Password:', password);
+      console.log(errors)
     };
   
     return (
@@ -37,8 +36,8 @@ export const Login = () => {
                     <p>Recuerdame</p>
                 </div>
                 <div className='d-flex flex-column'>
-                    <Link className='button-login' type="submit" to="/">Iniciar sesión</Link>
-                    <Link className='button-register mt-3'> Registrarme </Link>
+                    <Link className='button-login' to="/">Iniciar sesión</Link>
+                    <Link className='button-register mt-3' to="/register"> Registrarme </Link>
                 </div>
                 </form> 
             </div>
