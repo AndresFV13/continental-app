@@ -25,7 +25,7 @@ export const ModalEditAlumnos = ({closeModalAlum}) => {
                           &times;
                 </span>
             </div>
-            <h2 className='title'>Agregar Alumno </h2>
+            <h2 className='title'>Editar Alumno </h2>
             <label className='text-aling-left'>Nombre:</label>
             <input type="text" 
                    className='modal-input'

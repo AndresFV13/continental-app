@@ -17,11 +17,13 @@
   }
   
 .modal-content {
+  display: flex;
+  flex-direction: column;
     background-color: #fff;
     padding: 0rem 4rem 4rem 4rem;
     border-radius: 8px;
     width: 500px;
-    height: 580px;
+    height: 740px;
   }
   
 .close {
@@ -46,14 +48,20 @@
     margin-bottom: 3rem;
 }
   
-  .modal-input,
-  .button-agregar {
-    display: block;
-    margin-bottom: 10px;
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-  }
+.modal-input,
+.button-agregar {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.modal-input-checkbox{
+  display: flex;
+  align-items: center;
+}
   
 .button-agregar {
     background-color: #007bff;
