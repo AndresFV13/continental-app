@@ -23,7 +23,6 @@
     padding: 0rem 4rem 4rem 4rem;
     border-radius: 8px;
     width: 500px;
-    height: 740px;
   }
   
 .close {
@@ -80,6 +79,7 @@
 
 .input-error{
   border: 1px solid red;
+  
 }
 
 .icon-button{
