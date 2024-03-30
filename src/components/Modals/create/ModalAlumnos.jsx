@@ -1,66 +1,72 @@
 import { useEffect, useState, useCallback } from 'react';
 import { store } from '../../../store/store';
 
-export const ModalAlumnos = ({ setShowModalALum, userId }) => {
-  const [infoAlumno, setInfoAlumno] = useState({ nombres: '', apellidos: '', cedula: '', celular: '', correo: '', cursos: [], estado: false });
+export const ModalAlumnos = ({ setShowModalALum, student }) => {
+  const [formData, setFormData] = useState({
+    nombres: '',
+    apellidos: '',
+    docIdentificacion: '',
+    cel: '',
+    correo: '',
+    cursoStudentDTO: [],
+    estado: false,
+  });
   const [errors, setErrors] = useState({});
   const [disabledButton, setDisabledButton] = useState(true);
 
-  const { courses, alumnos, addAlumno } = store(state => ({
-    courses: state.courses,
-    alumnos: state.alumnos,
-    addAlumno: state.addAlumno
+  const { courses } = store(state => ({
+    courses: state.courses
   }));
 
   useEffect(() => {
-    if (userId && alumnos.length > 0) {
-      const alumno = alumnos.find(a => a.id === userId);
-      if (alumno) {
-        setInfoAlumno(alumno);
-      }
+    if (student) {
+      setFormData({
+        ...student,
+        cursoStudentDTO: student.cursoStudentDTO.map(({ curso, studentHabilitado }) => ({
+          id: curso.id,
+          studentHabilitado
+        }))
+      });
     }
-  }, [userId, alumnos]);
+  }, [student]);
 
   useEffect(() => {
-    const isDisabled = [infoAlumno.nombres, infoAlumno.apellidos, infoAlumno.cedula, infoAlumno.celular, infoAlumno.correo].some(field => field.trim() === '');
+    const isDisabled = !formData.nombres || !formData.apellidos || !formData.docIdentificacion || !formData.cel || !formData.correo;
     setDisabledButton(isDisabled);
-  }, [infoAlumno]);
+  }, [formData]);
 
   const onInputChange = useCallback(({ target: { name, value } }) => {
-    setInfoAlumno(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleCourseChange = (curso) => {
-    setInfoAlumno(prev => {
-      const cursoIndex = prev.cursos.findIndex(c => c.id === curso.id);
-      let newCursos = [...prev.cursos];
+  const toggleCurso = (cursoId) => {
+    setFormData(prev => {
+      const cursoIndex = prev.cursoStudentDTO.findIndex(c => c.id === cursoId);
+      const newCursos = [...prev.cursoStudentDTO];
 
       if (cursoIndex === -1) {
-        newCursos.push({ id: curso.id, habilitado: false });
+        newCursos.push({ id: cursoId, studentHabilitado: false });
       } else {
         newCursos.splice(cursoIndex, 1);
       }
 
-      return { ...prev, cursos: newCursos };
+      return { ...prev, cursoStudentDTO: newCursos };
     });
   };
 
-  const handleHabilitadoChange = (curso) => {
-    setInfoAlumno(prev => {
-      const cursoIndex = prev.cursos.findIndex(c => c.id === curso.id);
-      let newCursos = [...prev.cursos];
+  const toggleHabilitado = (cursoId) => {
+    setFormData(prev => {
+      const newCursos = prev.cursoStudentDTO.map(c =>
+        c.id === cursoId ? { ...c, studentHabilitado: !c.studentHabilitado } : c
+      );
 
-      if (cursoIndex !== -1) {
-        newCursos[cursoIndex] = { ...newCursos[cursoIndex], habilitado: !newCursos[cursoIndex].habilitado };
-      }
-
-      return { ...prev, cursos: newCursos };
+      return { ...prev, cursoStudentDTO: newCursos };
     });
   };
 
   const validateForm = useCallback(() => {
     const newErrors = {};
-    Object.entries(infoAlumno).forEach(([key, value]) => {
+    Object.entries(formData).forEach(([key, value]) => {
       if (typeof value === 'string' && value.trim() === '') {
         newErrors[key] = 'Este campo es obligatorio';
       }
@@ -68,48 +74,43 @@ export const ModalAlumnos = ({ setShowModalALum, userId }) => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [infoAlumno]);
+  }, [formData]);
 
-  const handleSubmit = useCallback((event) => {
+  const handleSubmit = useCallback(event => {
     event.preventDefault();
     if (validateForm()) {
-      const action = userId ? 'update' : 'add'; // Example of branching logic, actual update logic should be implemented
-      if (action === 'add') {
-        console.log(infoAlumno);
-        //addAlumno({ ...infoAlumno });
-      }
-      // Update logic here
+      // Lógica para agregar o actualizar estudiante
+      console.log(formData);
       setShowModalALum(false);
     }
-  }, [userId, validateForm, infoAlumno, addAlumno, setShowModalALum]);
+  }, [validateForm, formData, setShowModalALum]);
 
   return (
     <form className="modal" onSubmit={handleSubmit}>
       <div className="modal-content">
         <span className="close" onClick={() => setShowModalALum(false)}>&times;</span>
-        <h2>{userId ? 'Editar' : 'Agregar'} Alumno</h2>
-        <input type="text" placeholder="Imgresa el nombre" name="nombres" value={infoAlumno.nombres} onChange={onInputChange} />
-        <input type="text" placeholder="Imgresa el apellido" name="apellidos" value={infoAlumno.apellidos} onChange={onInputChange} />
-        <input type="text" placeholder="Imgresa la ceedula" name="cedula" value={infoAlumno.cedula} onChange={onInputChange} />
-        <input type="text" placeholder="Imgresa el celular" name="celular" value={infoAlumno.celular} onChange={onInputChange} />
-        <input type="text" placeholder="Imgresa el correo" name="correo" value={infoAlumno.correo} onChange={onInputChange} />
+        <h2>{student ? 'Editar' : 'Agregar'} Alumno</h2>
+        <input type="text" placeholder="Ingresa el nombre" name="nombres" value={formData.nombres} onChange={onInputChange} />
+        <input type="text" placeholder="Ingresa el apellido" name="apellidos" value={formData.apellidos} onChange={onInputChange} />
+        <input type="text" placeholder="Ingresa la cédula" name="docIdentificacion" value={formData.docIdentificacion} onChange={onInputChange} />
+        <input type="text" placeholder="Ingresa el celular" name="cel" value={formData.cel} onChange={onInputChange} />
+        <input type="text" placeholder="Ingresa el correo" name="correo" value={formData.correo} onChange={onInputChange} />
         {courses.map((curso) => (
           <div key={curso.id} className="d-flex">
             <div>
               <input
                 type="checkbox"
-                name="cursos[]"
-                checked={infoAlumno.cursos.some(c => c.id === curso.id)}
-                onChange={() => handleCourseChange(curso)}
+                checked={formData.cursoStudentDTO.some(c => c.id === curso.id)}
+                onChange={() => toggleCurso(curso.id)}
               />
               {curso.nombre}
             </div>
             <div>
               <input
                 type="checkbox"
-                disabled={!infoAlumno.cursos.some(c => c.id === curso.id)}
-                checked={infoAlumno.cursos.some(c => c.id === curso.id && c.habilitado)}
-                onChange={() => handleHabilitadoChange(curso)}
+                disabled={!formData.cursoStudentDTO.some(c => c.id === curso.id)}
+                checked={formData.cursoStudentDTO.some(c => c.id === curso.id && c.studentHabilitado)}
+                onChange={() => toggleHabilitado(curso.id)}
               />
               Habilitado
             </div>
@@ -118,8 +119,8 @@ export const ModalAlumnos = ({ setShowModalALum, userId }) => {
         <input
           type="checkbox"
           name="estado"
-          checked={infoAlumno.estado}
-          onChange={(e) => setInfoAlumno(prev => ({ ...prev, estado: e.target.checked }))}
+          checked={formData.estado}
+          onChange={(e) => setFormData(prev => ({ ...prev, estado: e.target.checked }))}
         />
         <button type="submit" disabled={disabledButton}>Guardar</button>
       </div>
