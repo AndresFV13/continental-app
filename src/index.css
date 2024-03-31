@@ -36,6 +36,14 @@ body {
 .ft-3{
   font-size: 3rem;
 }
+ /* Establece una posicion absoluta */
+.p-absolute{
+  position: absolute !important; 
+}
+
+.p-bottom{
+  bottom: 0px !important;
+}
 
 /* Establece un contenedor como un contenedor flexible */
 .d-flex {
@@ -509,6 +517,10 @@ body {
   color: #313131;
 }
 
+.c-black{
+  color: black;
+}
+
 .c-lt-gray{
   background-color: #F6F8F9;
 } 
@@ -604,10 +616,26 @@ body {
   color: white;
   cursor: pointer;
   text-align: center;
+  font-size: 15px;
 }
 
+.button-register:hover,
 .button-login:hover {
   background-color: #0056b3;
+}
+
+.button-register:disabled,
+.button-register[disabled],
+.button-login:disabled,
+.button-login[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+/* Sidebar */
+.ml-240{
+  margin-left: 240px;
 }
 
 .calendar-button{
@@ -644,21 +672,36 @@ body {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
+  max-width: 100%; 
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  overflow-x: hidden;
+  border-radius: 5px;
 }
 
-.dropdown-content span {
+.dropdown-content span,
+.dropdown-content .link{
   color: black;
-  padding: 5px;
+  padding: 5px 10px;
   text-decoration: none;
   display: block;
   cursor: pointer;
 }
 
-.dropdown-content span:hover {background-color: #f1f1f1}
+.dropdown-content span:hover, .dropdown-content .link:hover {background-color: #f1f1f1}
 
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+.isActive {
+  color: #007BFF !important; 
+}
+
+@media screen and (max-width: 1500px) {
+  .dropdown-content {
+    right: 0; /* Ajusta la posición para pantallas pequeñas si es necesario */
+  }
+}
+

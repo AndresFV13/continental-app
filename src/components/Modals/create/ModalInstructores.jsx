@@ -1,119 +1,149 @@
-// hooks
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { store } from '../../../store/store';
+// Axios
+import Axios from '../../../lib/Axios';
 
-
-
-export const ModalInstructores = ({setShowModalInst}) => {
-
-  const [errors, setErrors] = useState({})
-
+export const ModalInstructores = ({ setShowModalInst, instructor }) => {
+  const [formData, setFormData] = useState({
+    id: null,
+    nombres: '',
+    apellidos: '',
+    cedula: '',
+    cel: '',
+    correo: '',
+    cursoInstructorDTO: [],
+    estado: 'activo',
+  });
   const [disabledButton, setDisabledButton] = useState(true);
 
-  //State
-  const [infoInstructor, setInfoInstructor] = useState({
-    nombre: "",
-    cedula: "",
-    licencias: ""
-  });
+  const { courses, addMaestro, updateMaestro } = store(state => ({
+    courses: state.courses,
+    addMaestro: state.addMaestro,
+    updateMaestro: state.updateMaestro
+  }));
 
-  const { nombre, cedula, licencias } = infoInstructor
-
-  //Actions
-  const addInstructor = store((state) => state.addInstructor)
-
-  const onValidate = () =>{
-    let isError = false
-    let errors = {}
-
-    if (!nombre.trim()){
-      errors.nombre = true
-      isError = true
+  useEffect(() => {
+    if (instructor) {
+      setFormData({
+        id: instructor.id,
+        nombres: instructor.nombres,
+        apellidos: instructor.apellidos,
+        cedula: instructor.cedula,
+        cel: instructor.cel,
+        correo: instructor.correo,
+        cursoInstructorDTO: instructor.cursoInstructorDTO.map(curso => ({
+          id: curso.id,
+          curso: { id: curso.curso.id, nombre: curso.curso.nombre, horas: curso.curso.horas }
+        })),
+        estado: instructor.estado === 'activo' ? 'activo' : 'inactivo',
+      });
     }
-    if (!cedula.trim()){
-      errors.cedula = true
-      isError = true
-    }
-    if (!licencias.trim()){
-      errors.licencias = true
-      isError = true
-    }
+  }, [instructor]);
 
-    return isError ? errors : null
-  }
+  useEffect(() => {
+    const isDisabled = !formData.nombres || !formData.apellidos || !formData.cedula || !formData.cel || !formData.correo;
+    setDisabledButton(isDisabled);
+  }, [formData]);
 
-  const onInputChange= (event) => {
-    const { name, value, cedula, licencias } = event.target;
-    setInfoInstructor({
-      ...infoInstructor,
-      [name]: value,
-    })
-  }
+  const onInputChange = useCallback(({ target: { name, value } }) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }, []);
 
-  const onSubmit = () => {
-    const err = onValidate(infoInstructor);
+  const toggleCurso = (curso) => {
+    setFormData(prev => {
+      const cursoIndex = prev.cursoInstructorDTO.findIndex(c => c.curso.id === curso.id);
+      let newCursos = [...prev.cursoInstructorDTO];
 
-    if(err === null){
-        console.log("enviando formulario")
-        setShowModalInst(false)
-    }else{
-        setErrors(err)
-    }
-  }
+      if (cursoIndex === -1) {
+        newCursos.push({
+          curso: { id: curso.id, nombre: curso.nombre }
+        });
+      } else {
+        newCursos.splice(cursoIndex, 1);
+      }
 
-  const closeModal = () => {
-    setShowModalInst(false)
-  }
-
-  const customOnSubmit = (e) => {
-    e.preventDefault()
-    onSubmit();
-    if (nombre.trim() === '' || cedula.trim() === '' || licencias.trim() === '') return;
-    addInstructor(infoInstructor);
+      return { ...prev, cursoInstructorDTO: newCursos };
+    });
   };
 
-   useEffect(() => {
-    if (nombre.trim() === '' || cedula.trim() === '' || licencias.trim() === '') {
-      setDisabledButton(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const action = formData.id ? updateMaestro : addMaestro; // Decide si actualizar o agregar basado en la presencia del id // Ejecutar la acción correspondiente con los datos del formulario
+    formData.cursoInstructorDTO.forEach(curso => curso.horasCompletadas = 0)
+    if (!formData.id) {
+      formData.cursoInstructorDTO = formData.cursoInstructorDTO.map(curso => ({ idCurso: curso.curso.id}))
+      delete formData.id;
+      await Axios.post('/instructors/Instructor', formData)
+      window.location.reload();
     } else {
-      setDisabledButton(false);
-    }
-  }, [nombre, cedula, licencias]);
-  
+      formData.cursoInstructorDTO = formData.cursoInstructorDTO.map(curso => ({ idCurso: curso.curso.id, idInstructors: formData.id, horasCompletadas: 0 }))
+      await Axios.put('/instructors/Instructor', formData)
+      window.location.reload();
+    };
+    //action(formData);
+    setShowModalInst(false);
+  }
+
   return (
-        <form className="modal" onSubmit={customOnSubmit}>
-          <div className="modal-content">
-            <div className='container-button'>
-                <span className="close" 
-                        onClick={closeModal}> 
-                          &times;
-                </span>
+    <form className="modal" onSubmit={handleSubmit}>
+      <div className="modal-content">
+        <div className='container-button'>
+          <span className="close" onClick={() => setShowModalInst(false)}>&times;</span>
+        </div>
+        <h2 className='mb-3'>{instructor ? 'Editar' : 'Agregar'} Instructor </h2>
+        <label className='text-aling-left'>Nombres</label>
+        <input type="text"
+          className='modal-input'
+          placeholder="Ingresa el nombre"
+          name="nombres"
+          value={formData.nombres}
+          onChange={onInputChange} />
+        <label className='text-aling-left'>Apellidos</label>
+        <input type="text"
+          className='modal-input'
+          placeholder="Ingresa el apellido"
+          name="apellidos"
+          value={formData.apellidos}
+          onChange={onInputChange} />
+        <label className='text-aling-left'>Cedula</label>
+        <input type="text"
+          className='modal-input'
+          placeholder="Ingresa la cédula"
+          name="cedula"
+          value={formData.cedula}
+          onChange={onInputChange} />
+        <label className='text-aling-left'>Celular</label>
+        <input type="text"
+          className='modal-input'
+          placeholder="Ingresa el celular"
+          name="cel"
+          value={formData.cel}
+          onChange={onInputChange} />
+        <label className='text-aling-left'>Correo</label>
+        <input type="text"
+          className='modal-input'
+          placeholder="Ingresa el correo"
+          name="correo"
+          value={formData.correo}
+          onChange={onInputChange} />
+        <label className='text-aling-left mb-2'>Cursos</label>
+        <div className='d-flex flex-column w-50'>
+          {courses.map((curso) => (
+            <div key={curso.id} className="d-flex w-100 justify-content-between">
+              <div>
+                <input
+                  className="mr-2"
+                  type="checkbox"
+                  checked={formData.cursoInstructorDTO.some(c => c.curso.id === curso.id)}
+                  onChange={() => toggleCurso(curso)}
+                />
+                {curso.nombre}
+              </div>
             </div>
-            <h2 className='title'>Agregar Instructor </h2>
-            <label>Nombre:</label>
-            <input type="text" 
-                   className={errors.nombre ? 'input-error modal-input' : 'modal-input'}
-                   name='nombre'
-                   value={infoInstructor.nombre}
-                   onChange={onInputChange}/>
-            <label>Cedula:</label>
-            <input type="number" 
-                   className={errors.cedula ? 'input-error modal-input' : 'modal-input'}
-                   name='cedula'
-                   value={infoInstructor.cedula}
-                   onChange={onInputChange}/>
-            <label>Tipo de Licencia:</label>
-            <input type="text" 
-                   className={errors.licencias ? 'input-error modal-input' : 'modal-input'}
-                   name='licencias'
-                   value={infoInstructor.licencias}
-                   onChange={onInputChange}/>  
-            {errors.nombre || errors.cedula || errors.licencias ? <p> Todos los campos son obligatorios </p> : null }     
-            <button className='button-agregar' 
-                    type='submit'>
-                      Agregar
-            </button>
-          </div>
-        </form>
-  )
-}
+          ))}
+        </div>
+        <button className='button-agregar' type="submit" disabled={disabledButton}>Guardar</button>
+      </div>
+    </form>
+  );
+};

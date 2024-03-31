@@ -1,111 +1,137 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+// Axios
+import Axios from '../lib/Axios';
+//sweetaleert2
+import Swal from 'sweetalert2'
 
 export const Register = () => {
-
-
-    const [dateUser, setDateUser] = useState({
+    const [dataUser, setDataUser] = useState({
         email: "",
         user: "",
-        password: "", 
-        confirmPassword: ""
+        password: "",
+        confirmPassword: "",
     });
-    const {email, user, password, confirmPassword} = dateUser
-    const [errors, setErros] = useState({})
-    const [validEmail, setValidEmail] = useState(false)
+    const { email, user, password, confirmPassword } = dataUser;
 
-    const onValidate = () =>{
+    const [disabledButton, setDisabledButton] = useState(true);
+    const [validEmail, setValidEmail] = useState(false);
 
-      if (email.trim() === ''){
-        errors.email = true
-      }
-      if (user.trim() === ''){
-        errors.user = true
-      } 
-      if (password.trim() === ''){
-        errors.password = true
-      } 
-      if (confirmPassword.trim() === '' ){
-        errors.confirmPassword = true
-      } else {
-        errors.confirmPassword = false
-      }
-    }  
+    const postUsers = async () => {
+        const userData = {
+            email: dataUser.email,
+            loginName: dataUser.user,
+            password: dataUser.password,
+            estado: "activo"
+        };
+        try {
+            const request = await Axios.post('/auth/user', userData);
+            if (request.status === 200) {
+                Swal.fire({
+                    title: "Usuario creado!",
+                    text: "Ahora inicia sesion",
+                    icon: 'success',
+                });
+                setDataUser({
+                    email: "",
+                    user: "",
+                    password: "",
+                    confirmPassword: "",
+                })
+            }
+        } catch (error) {
+            console.error('Error al registrar usuario:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "El usuario ya existe",
+            });
+        }
+    };
+
+    useEffect(() => {
+        const isDisabled = !user || !email || !password || confirmPassword !== password;
+        setDisabledButton(isDisabled);
+    }, [dataUser]);
+
+    const handledataUserChange = (e) => {
+        const { value, name } = e.target;
+        setDataUser({
+            ...dataUser,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validarCorreo(email)) {
+            setValidEmail(false);
+            postUsers();
+        } else {
+            setValidEmail(true);
+        }
+    };
 
     const validarCorreo = (email) => {
         const expresionRegular = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return expresionRegular.test(email);
-      }
-  
-    const handleDateUserChange = (e) => {
-        const {value, name} = e.target
-        setDateUser({
-            ...dateUser,
-            [name]: value,
-        })
     };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
 
-      onValidate()
-      console.log(errors)
-
-      if (validarCorreo(email)) {
-        setValidEmail(false)
-      } else {
-        setValidEmail(true)
-      }
-    };
-  
     return (
-        <div className='d-flex align-items-center w-100 h-100'> 
-            <div className="login-form-container"> 
-                <h2 className='title-login'>Registrase</h2> 
+        <div className='d-flex align-items-center w-100 h-100 p-absolute'>
+            <div className="login-form-container">
+                <h2 className='title-login'>Registrarse</h2>
                 <form onSubmit={handleSubmit}>
-                <label className='label-login'>
-                    Correo:
-                    <input className={errors.email || validEmail ? 'input-error input-login' : 'input-login'}
-                           type="user"
-                           name='email' 
-                           value={email}
-                           onChange={handleDateUserChange}/>
-                </label>
-                {validEmail ? <p className='mb-2'> Correo electronico invalido</p> : null }
-                <label className='label-login'>
-                    Nombre de usuario:
-                    <input className={errors.user ? 'input-error input-login' : 'input-login'} 
-                           type="user" 
-                           value={user}
-                           name='user' 
-                           onChange={handleDateUserChange}/>
-                </label>
-                <label>
-                    Contraseña:
-                    <input className={errors.password ? 'input-error input-login' : 'input-login'} 
-                           type="password" 
-                           value={password}
-                           name='password' 
-                           onChange={handleDateUserChange} />
-                </label>
-                <label>
-                    Confirmar contraseña:
-                    <input className={errors.confirmPassword ? 'input-error input-login' : 'input-login'} 
-                           type="password" 
-                           value={confirmPassword}
-                           name='confirmPassword' 
-                           onChange={handleDateUserChange} />
-                </label>
-                {errors.email || errors.user || errors.password || errors.confirmPassword ? <p className='mb-2'> Todos los campos son obligatorios </p> : null } 
-                <div className='d-flex flex-column'>
-                    <Link className='button-register mt-3' 
-                    to="/login"
-                    // onClick={handleSubmit}
-                    > Registrarme 
-                </Link>
-                </div>
-                </form> 
+                    <label className='label-login'>
+                        Correo:
+                        <input
+                            className='input-login'
+                            type="email"
+                            name='email'
+                            value={email}
+                            onChange={handledataUserChange} />
+                    </label>
+                    {validEmail && <p className='mb-2'>Correo electrónico inválido</p>}
+                    <label className='label-login'>
+                        Nombre de usuario:
+                        <input
+                            className='input-login'
+                            type="text"
+                            value={user}
+                            name='user'
+                            onChange={handledataUserChange} />
+                    </label>
+                    <label>
+                        Contraseña:
+                        <input
+                            className='input-login'
+                            type="password"
+                            value={password}
+                            name='password'
+                            onChange={handledataUserChange} />
+                    </label>
+                    <label>
+                        Confirmar contraseña:
+                        <input
+                            className='input-login'
+                            type="password"
+                            value={confirmPassword}
+                            name='confirmPassword'
+                            onChange={handledataUserChange} />
+                    </label>
+                    <div className='d-flex flex-column'>
+                        <button className='button-register mt-3'
+                            disabled={disabledButton}>
+                            Registrarme
+                        </button>
+                    </div>
+                    <div className='d-flex flex-column'>
+                        <Link className='button-register mt-3' to="/login">
+                            Iniciar Sesion
+                        </Link>
+                    </div>
+                </form>
             </div>
         </div>
     );
-}
+};

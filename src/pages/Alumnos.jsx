@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 // store global
 import { store } from '../store/store'
-
 //components
-import { CalendarButton } from '../components/calendar/CalendarButton'
 import { Search } from '../components/search/Search'
-
-//icons
-import { deleteIcon, editIcon } from '../../public/icons/icons'
-
+import { ModalAlumnos } from '../components/Modals/create/ModalAlumnos'
 //Axios
 import Axios from '../lib/Axios';
-import { ModalAlumnos } from '../components/Modals/create/ModalAlumnos'
-
+// hooks
 import { useModal } from '../hooks/useModal'
+//sweetaleert2
+import Swal from 'sweetalert2'
+//icons
+import { dostHorizontal } from '../../public/icons/icons'
 
 export const Alumnos = () => {
     const [studentToEdit, setStudentToEdit] = useState(null);
@@ -34,15 +33,50 @@ export const Alumnos = () => {
     }
     const getAllAlumnos = async () => {
         const request = await Axios.get('/students/students/all');
-        const response = request.data;
-        setAlumnos(response.objectResponse);
+        const response = request.data.objectResponse;
+        setAlumnos(response);
+    };
+    const deleteStudent = async (studentId) => {
+        try {
+            await Axios.delete(`/students/students/${studentId}`)
+            getAllAlumnos
+        } catch (error) {
+            console.error(error)
+        }
     };
     useEffect(() => {
         getAllAlumnos();
     }, []);
 
+    const deleteAlumno = (studentId) => {
+        Swal.fire({
+            title: "¿Estas seguro?",
+            text: "Se elminara de forma permanente",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar ahora",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    deleteStudent(studentId);
+                    Swal.fire({
+                        title: "Eliminar!",
+                        text: "Eliminación completa.",
+                        icon: "success"
+                    });
+                } catch (error) {
+                    console.error(error)
+                }
+                
+            }
+        });
+    }
+
     return (
-        <div className='d-flex flex-column align-items-center w-100 h-100 c-lb-gray'>
+        <div className='d-flex flex-column align-items-center w-100 h-100 c-lb-gray xd'>
             <div className='d-flex align-self-start my-4 mx-3'>
                 <p className='ft-2'> Alumnos </p>
             </div>
@@ -65,28 +99,21 @@ export const Alumnos = () => {
                 <tbody>
                     {
                         alumnos.map((alumno, index) => (
-                            <tr className='d-flex bor-gray align-items-center' key={alumno.cedula}>
+                            <tr className='d-flex bor-gray align-items-center' key={alumno.docIdentificacion}>
                                 <td className='m-3 w-20 text-align-center'> {index + 1} </td>
                                 <td className='m-3 w-20 text-align-center'> {alumno.nombres} {alumno.apellidos}</td>
                                 <td className='m-3 w-20 text-align-center'> {alumno.docIdentificacion} </td>
                                 <td className='m-3 w-20 text-align-center'> {alumno.cel} </td>
                                 <td className='d-flex justify-content-center align-items-center m-1 w-20'>
-                                    {/* <span>
-                                        <span onClick={closeModalAlum}>{editIcon}</span>
-                                        {editModalAlumn === true ? <ModalAlumnos userId={alumno.id} setShowModalALum={() => closeModalAlum()} /> : null}
-                                    </span>
-                                    <span>{deleteIcon}</span> */}
-
-                                    <div class="dropdown">
+                                    <div className="dropdown">
                                         <span className="cursor-pointer dropbtn">
-                                            <svg width="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                            </svg>
+                                            {dostHorizontal}
                                         </span>
-                                        <div class="dropdown-content">
+                                        <div className="dropdown-content">
                                             <span href="#">Ver cursos</span>
-                                            <span onClick={() => {setStudentToEdit(alumno); setEditModalAlumn(true)}}>Editar alumno</span>
-                                            <span href="#">Eliminar alumno</span>
+                                            <span onClick={() => { setStudentToEdit(alumno); setEditModalAlumn(true) }}>Editar alumno</span>
+                                            <span onClick={() => deleteAlumno(alumno.id)}>Eliminar alumno</span>
+                                            <Link className='link' to={`/calendar/${alumno.id}`}> Ver calendario </Link>
                                         </div>
                                     </div>
                                 </td>
@@ -95,7 +122,7 @@ export const Alumnos = () => {
                     }
                 </tbody>
             </table>
-            {studentToEdit && <ModalAlumnos student={studentToEdit} setShowModalALum={() => closeModalAlum()} />}
+            {editModalAlumn && <ModalAlumnos student={studentToEdit} setShowModalALum={() => closeModalAlum()} />}
         </div>
     )
 }

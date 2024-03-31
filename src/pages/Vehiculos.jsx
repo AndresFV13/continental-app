@@ -10,10 +10,6 @@ import { Search } from '../components/search/Search';
 export const Vehiculos = () => {
 
   const vehiculos = store((state) => state.vehiculos)
-
-    useEffect(() => {
-        console.log(vehiculos);
-    }, [vehiculos]);
   
   return (
     <div className='d-flex flex-column align-items-center w-100 h-100 c-lb-gray'>
